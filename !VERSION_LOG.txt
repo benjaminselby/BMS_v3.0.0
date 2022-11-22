@@ -1,0 +1,149 @@
+﻿
+
+=============================================================================================================
+1.5
+=============================================================================================================
+
+- [selby_b 2020.08.21] No modifications made. Just built project in VS2019 and deployed. Previous version 
+	on client machines appeared to be v1.2. 
+	
+
+=============================================================================================================
+2.0.0
+=============================================================================================================
+
+- Significant revision of user interface and code base. Window layout modified to horizontal in order 
+	to better accommodate laptop screen (previous version was too long and disappeared off bottom of screen).
+
+- Added MatchingComboBox control, which is a new object type that inherits from the .NET ComboBox control. 
+	This improves on the standard ComboBox because typed text will match at any position in the string 
+	list that the ComboBox contains, not just the beginning of strings. 
+
+- Originally planned to disable the ability to impersonate another staff member via selection box, 
+	but this has been retained because it is apparently useful for admin staff to be able to add sanctions
+	on behalf of a teacher. However, in order to avoid confusion regarding who has actually set detentions, 
+	I added a 'ModifiedBy' field to the [dbo.uStudentSanctions] table in Synergy to record the true ID of the 
+	current user entering the sanction, even if they have set the sanction on behalf of another staff member. 
+
+
+=============================================================================================================
+2.0.1
+=============================================================================================================
+
+- Icon was not appearing on desktop. Fixed installer. 
+
+- Fixed bug where using an apostrophe in the 'Comment' field was causing a syntax error for the SQL code
+	which inserts a new record into the system, e.g. "Didn't attend soccer practice." would cause an error. 
+
+
+=============================================================================================================
+2.0.2
+=============================================================================================================
+
+- Most SQL queries moved to stored procedures. Any which were not moved to stored procedures were moved 
+	to the APP.CONFIG file. 
+
+- Moved default config values from code into APP.CONFIG file and modified ConfigHandler to load from 
+	there instead. 
+
+
+=============================================================================================================
+2.0.3
+=============================================================================================================
+
+- Moved logic for choosing available sanction days (based on type) to a stored procedure in the Synergy 
+	database. So, if detention days change, we won't have to re-deploy the application. 
+
+- Added an event handler for the sanction date picker combobox so that dates with existing bookings 
+	cannot be selected, and a warning message is displayed. 
+
+NOTIFICATION EMAILS:
+
+	These are planned for rollout for SENIOR SCHOOL ONLY prior to end of Term 2 2021 if possible.  
+
+	Originally, the intention was for BMS to send these emails, but after discussing this with Adrian, 
+	we think that it would be best to have a delay on the sending of communications to parents so that
+	teachers have a chance to modify detentions etc. in case they make a mistake. The entire mail process
+	will probably need to be moved to a script which runs once per day in the evening or something. 
+
+		- Mail to: Teacher setting the detention, TG teacher, Head of Year, 
+			student, and student's contacts. 
+
+		TESTERS: 
+			- Tracey Warren (13028) son in Y10: Jaylen Warren (21590). Accepted. 
+			- Scott Bayne (32027) son in Y11: Ethan Bayne (32029).
+			- Rachel Empson (31927) son in Y12: Louis Gratwick (31928).
+
+Deployed. [selby_b 2021.05.10]
+
+
+=============================================================================================================
+v2.0.4
+=============================================================================================================
+
+- Put version number in title bar of the application and nowhere else. We don't want it in the path to the 
+	executable so that apps such as BMS Admin can always find the app in the same path location. 
+
+- Modified install path so it is the same regardless of BMS version. This is important so that BMS Admin 
+	knows where to find the BMS program so it can run it. Make sure that the install location is stored 
+	in the WOODCROFT.UBMSCONFIG table in Synergy so that the BMS Admin table can launch it. 
+
+	Currently set to: 'C:\Program Files (x86)\Woodcroft College\BMS\BMS.exe'.
+
+- Put in some better error handling (Try/Catch) to report exception messages when they occur. Currently, 
+	the app fails silently which means there's no way of knowing what's going wrong. 
+
+- For all Junior School students, changed the interface label 'Sanction Date' to 'Incident Date'. 
+	Also for JS students the dates in the Incident Date ComboBox now run from the present day 
+	up to 2 weeks in the past. This is because JS use the Sanction Date to record WHEN the 
+	incident occurred, not when the actual 	punishment should be applied. 
+	(Request from Craig Bennett - 09.08.2021). 
+
+Deployed: 2021.08.17
+
+
+=============================================================================================================
+v2.0.5
+=============================================================================================================
+
+- Implemented a button and window which enables staff to view, modify and delete their existing sanctions. 
+	This is useful because when staff currently want to change an existing sanction, they need to contact 
+	Nicki or Alison in the Student Services office to do it for them. 
+
+- Modifications to ConfigHandler to make it simpler. 
+
+- Moved some interface settings to the config table. 
+
+- Added a new column to the back end data table [dbo.uStudentSanctions] called [InformationOnly]. To be 
+	used to record when a sanction is going to be handled by a staff member themselves, and the student
+	should not be expected in a scheduled detention session which would be run by a HoY. 
+
+	This breaks with the previous data model, which recorded such sanctions as 'completed', but I don't 
+	think it's good to continue with that as it's not correct information: the student has not 'completed'
+	the sanction yet. There may be some backward/sideways compatibility issues with this as we try to 
+	integrate it with other existing systems. 
+
+[Deployed: 2021.11.10]
+
+
+=============================================================================================================
+v3.0.0
+=============================================================================================================
+
+SIGNIFICANT CHANGE: The BMS and BMS Admin applications are now combined into a single deployment of 
+	BMS. The app can be deployed to all staff, and on startup the application should determine which 
+	level of functionality a user should have access to. 
+
+	This represents the first stage in our attempt to consolidate as much application and data access
+	architecture as possible into a single application. 
+
+[]
+
+
+
+=============================================================================================================
+TODO:
+=============================================================================================================
+
+
+

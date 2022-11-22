@@ -188,7 +188,7 @@ Class ConfigHandler
                 ' ------------------------------------------------------------------------------
                 ' If testing, set a debug user Network Login here. 
                 'MessageBox.Show("RUNNING IN DEBUG MODE!")
-                'currentUserNetworkLogin = "elliston_a"
+                'currentUserNetworkLogin = "<TEST_USER>"
                 ' ------------------------------------------------------------------------------
 
                 queryParams = New Dictionary(Of String, String) _
